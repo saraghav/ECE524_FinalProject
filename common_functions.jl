@@ -37,6 +37,11 @@ function load_images_as_cellarray_mats(image_files)
     for (image_n, image_file) in enumerate(image_files)
         image = load(image_file)
         image_mat = convert_image_to_mat(image)
+        
+        # fix for RGB4 seen on Mac because of ImageMagick behavior
+        #  read only RGB (ignore the 4th value)
+        image_mat = image_mat[:,:,1:3]
+        
         images_mat[image_n] = image_mat
     end
     return images_mat
