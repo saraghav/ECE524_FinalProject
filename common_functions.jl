@@ -65,4 +65,29 @@ function subsample_cellarray_mats(images_mat, desired_size)
     return images_mat
 end
 
+# function to scale one basis image to the desired size
+function scale_image(image,desired_size)
+    n_combine = 64/desired_size[1]
+    n_pixel = n_combine*n_combine
+    temp=image[1:desired_size[2], 1:desired_size[1], :]
+    for i in 1:desired_size[2]
+        for j in 1:desired_size[1]
+            sub = image[(i-1)*n_combine+(1:n_combine),(j-1)*n_combine+(1:n_combine),:]
+            for c in 1:3
+                pixel=convert(UInt8,round(sum(sum(sub[:,:,c]))/n_pixel))
+                temp[i,j,c]=pixel
+            end
+        end
+    end
+    return temp
+end
+
+# scale the whole base array
+function scale_cellarray_mats(images_mat, desired_size)
+    for (image_n, image) in enumerate(images_mat)
+            images_mat[image_n] = scale_image(image,desired_size)
+    end
+    return images_mat
+end
+
 ; # suppress output
