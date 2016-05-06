@@ -67,7 +67,7 @@ end
 
 # function to scale one basis image to the desired size
 function scale_image(image,desired_size)
-    n_combine = floor( size(image, 1)/desired_size[1] )
+    n_combine = floor(Int64, size(image, 1)/desired_size[1] + 0.5)
     n_pixel = n_combine*n_combine
     temp=image[1:desired_size[2], 1:desired_size[1], :]
     for i in 1:desired_size[2]
@@ -88,6 +88,19 @@ function scale_cellarray_mats(images_mat, desired_size)
             images_mat[image_n] = scale_image(image,desired_size)
     end
     return images_mat
+end
+
+# downscale image by a factor
+function downscale_image(image, factor)
+    if factor == 1
+        return image
+    else
+        desired_height = div(size(image,1), factor)
+        desired_width = div(size(image,2), factor)
+        desired_size = (desired_width, desired_height)
+        
+        return scale_image(image, desired_size)
+    end
 end
 
 ; # suppress output
