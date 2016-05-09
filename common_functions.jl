@@ -3,6 +3,7 @@
 ##################################################
 
 using Images, DataFrames, FixedPointNumbers, PyPlot, Colors, ProgressMeter
+using JuMP, Clp, Mosek
 
 # loads all jpg image files inside the directory
 function get_image_files(image_dir)
