@@ -68,7 +68,7 @@ end
 
 # function to scale one basis image to the desired size
 function scale_image(image,desired_size)
-    n_combine = floor(Int64, size(image, 1)/desired_size[1] + 0.5)
+    n_combine = div(size(image, 1), desired_size[1])
     n_pixel = n_combine*n_combine
     temp=image[1:desired_size[2], 1:desired_size[1], :]
     for i in 1:desired_size[2]
@@ -121,7 +121,7 @@ end
 
 # split the basis image array to 3 different basis sets based on the dominant channel
 function split_channel(images_mat,images_r,images_g,images_b)
-    cnt = zeros(3)
+    cnt = zeros(Int64, 3)
     for (image_n, image) in enumerate(images_mat)
         c=find_channel(image)
         cnt[c] = cnt[c]+1
