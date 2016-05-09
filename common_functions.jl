@@ -3,6 +3,7 @@
 ##################################################
 
 using Images, DataFrames, FixedPointNumbers, PyPlot, Colors, ProgressMeter
+using Interact, Reactive, DataStructures
 using JuMP, Clp, Mosek
 
 # loads all jpg image files inside the directory
