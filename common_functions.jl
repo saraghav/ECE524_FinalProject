@@ -136,4 +136,59 @@ function split_channel(images_mat,images_r,images_g,images_b)
     return cnt
 end
 
+#Convert rgb image to grayscaled image
+function rgb2gray(images)
+    images_gray_mat = cell(length(images),1)
+    for (image_n, image) in enumerate(images)
+        image_gray = convert(Image{Gray{Ufixed8}}, image)
+        image_mat = reinterpret(UInt8, separate(image_gray).data)
+        image_gray_mat=rand(UInt8, size(image_mat,1), size(image_mat,2),3)
+        image_gray_mat[:,:,1]= image_mat[:,:,1]
+        image_gray_mat[:,:,2]= image_mat[:,:,1]
+        image_gray_mat[:,:,3]= image_mat[:,:,1]      
+        images_gray_mat[image_n] = image_gray_mat
+    end
+    return images_gray_mat
+end
+
+#Scale a grayscale image
+function scale_gray_image(image,desired_size)
+     n_combine = 64/desired_size[1]
+    n_pixel = n_combine*n_combine
+    temp=image[1:desired_size[2], 1:desired_size[1], :]
+    for i in 1:desired_size[2]
+        for j in 1:desired_size[1]
+            sub = image[(i-1)*n_combine+(1:n_combine),(j-1)*n_combine+(1:n_combine),:]
+            
+            pixel=convert(UInt8,round(sum(sum(sub[:,:,1]))/n_pixel))
+            temp[i,j,1]=pixel
+            end
+        end
+    temp[:,:,2]=temp[:,:,1]
+    temp[:,:,3]=temp[:,:,1]
+    return temp
+end
+
+#Scale an array of grayscale images
+function scale_cellarray_gray_mats(images_mat, desired_size)
+    for (image_n, image) in enumerate(images_mat)
+        images_mat[image_n] = scale_gray_image(image,desired_size)
+    end
+    return images_mat
+end
+
+#Convert the image type to Int64 for easy calculation of image histogram
+function convert_image_mat_to_Int64(image_mat)
+    image_mat1=rand(Int64,size(image_mat,1),size(image_mat,2),size(image_mat,3))
+    for i in 1:size(image_mat,1)
+        for j in 1:size(image_mat,2)
+            for k in 1:size(image_mat,3)
+                image_mat1[i,j,k]=convert(Int64, image_mat[i,j,k])
+            end
+        end
+    end
+    
+    return image_mat1
+end
+
 ; # suppress output
