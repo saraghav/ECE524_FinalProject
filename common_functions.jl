@@ -104,4 +104,36 @@ function downscale_image(image, factor)
     end
 end
 
+# find the dominant channel for an image
+function find_channel(image)
+    ch = 0    
+    max = -1
+    avgc = 0
+    for c in 1:3
+        avgc = mean(image[:,:,c])
+        if (avgc > max)
+        max = avgc
+        ch = c
+        end
+    end
+    return ch
+end
+
+# split the basis image array to 3 different basis sets based on the dominant channel
+function split_channel(images_mat,images_r,images_g,images_b)
+    cnt = zeros(3)
+    for (image_n, image) in enumerate(images_mat)
+        c=find_channel(image)
+        cnt[c] = cnt[c]+1
+        if (c==1)
+            images_r[cnt[c]]=copy(image)
+        elseif (c==2)
+            images_g[cnt[c]]=copy(image)
+        else
+            images_b[cnt[c]]=copy(image)
+        end
+    end
+    return cnt
+end
+
 ; # suppress output
