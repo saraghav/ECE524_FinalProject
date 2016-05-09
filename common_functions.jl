@@ -2,6 +2,8 @@
 # Please include all the common packages here :) #
 ##################################################
 
+using Images, DataFrames, FixedPointNumbers, PyPlot, Colors, ProgressMeter
+
 # loads all jpg image files inside the directory
 function get_image_files(image_dir)
     # get all the files in the directory
