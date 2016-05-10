@@ -59,14 +59,6 @@ function load_cellarray_mats_as_images(images_mat)
     return images
 end
 
-# silly way to make all images the same size
-function subsample_cellarray_mats(images_mat, desired_size)
-    for (image_n, image) in enumerate(images_mat)
-        images_mat[image_n] = image[1:desired_size[2], 1:desired_size[1], :]
-    end
-    return images_mat
-end
-
 # function to scale one basis image to the desired size
 function scale_image(image,desired_size)
     n_combine = div(size(image, 1), desired_size[1])
@@ -137,7 +129,7 @@ function split_channel(images_mat,images_r,images_g,images_b)
     return cnt
 end
 
-#Convert rgb image to grayscaled image
+# convert rgb image to grayscaled image
 function rgb2gray(images)
     images_gray_mat = cell(length(images),1)
     for (image_n, image) in enumerate(images)
@@ -152,7 +144,7 @@ function rgb2gray(images)
     return images_gray_mat
 end
 
-#Scale a grayscale image
+# scale a grayscale image
 function scale_gray_image(image,desired_size)
      n_combine = 64/desired_size[1]
     n_pixel = n_combine*n_combine
@@ -170,7 +162,7 @@ function scale_gray_image(image,desired_size)
     return temp
 end
 
-#Scale an array of grayscale images
+# scale an array of grayscale images
 function scale_cellarray_gray_mats(images_mat, desired_size)
     for (image_n, image) in enumerate(images_mat)
         images_mat[image_n] = scale_gray_image(image,desired_size)
@@ -178,7 +170,7 @@ function scale_cellarray_gray_mats(images_mat, desired_size)
     return images_mat
 end
 
-#Convert the image type to Int64 for easy calculation of image histogram
+# convert the image type to Int64 for easy calculation of image histogram
 function convert_image_mat_to_Int64(image_mat)
     image_mat1=rand(Int64,size(image_mat,1),size(image_mat,2),size(image_mat,3))
     for i in 1:size(image_mat,1)
